@@ -30,6 +30,9 @@ def get_datapoint_enum_value(datapoint):
 def get_datapoint_value(datapoint):
     if datapoint.attrib["value"] == "":
         return None
+    if datapoint.attrib["type"] == "RSSI_DEVICE":
+        # The CCU returns an offset rssi value here. See https://forum.fhem.de/index.php?topic=106900.0
+        return int(datapoint.attrib["value"]) - 256
     if datapoint.attrib["valuetype"] == "2":
         return True if datapoint.attrib["value"] == "true" else False
     if datapoint.attrib["valuetype"] == "4":
@@ -135,8 +138,7 @@ if __name__ == "__main__":
     influxdb_client = InfluxDBClient(
         url=config["influxdb"]["url"],
         token=config["influxdb"]["token"],
-        org=config["influxdb"]["org"],
-        debug=True,
+        org=config["influxdb"]["org"]
     )
     influxdb_write_client = influxdb_client.write_api(write_options=SYNCHRONOUS)
 
