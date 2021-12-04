@@ -113,7 +113,7 @@ if __name__ == "__main__":
                     Point("window")
                     .tag("room", room_name)
                     .tag("device", device_name)
-                    .field("state", device_state["STATE"].name == "OPEN")
+                    .field("contactState", device_state["STATE"].name)
                     .field("rssi", device_state["RSSI_DEVICE"])
                     .field("lowbat", device_state["LOW_BAT"])
                     .field("unreach", device_state["UNREACH"])
